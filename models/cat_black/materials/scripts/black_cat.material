@@ -1,0 +1,13 @@
+material BlackCatImage
+{
+    technique
+    {
+        pass
+        {
+            texture_unit
+            {
+                texture ../textures/black_cat.jpg
+            }
+        }
+    }
+}

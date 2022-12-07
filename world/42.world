@@ -1199,6 +1199,7 @@
       </link>
       <pose>2.6162 1.524 0 0 -0 1.5708</pose>
     </model>
+
     <gravity>0 0 -9.8</gravity>
     <magnetic_field>6e-06 2.3e-05 -4.2e-05</magnetic_field>
     <atmosphere type='adiabatic'/>
@@ -1220,10 +1221,42 @@
       <heading_deg>0</heading_deg>
     </spherical_coordinates>
     <state world_name='default'>
-      <sim_time>412 870000000</sim_time>
-      <real_time>16 68688934</real_time>
-      <wall_time>1670382907 520578413</wall_time>
-      <iterations>16009</iterations>
+      <sim_time>396 861000000</sim_time>
+      <real_time>79 971687913</real_time>
+      <wall_time>1670380809 458953900</wall_time>
+      <iterations>79723</iterations>
+      <model name='Stop Sign'>
+        <pose>3.5246 1.4 1.9e-05 -0.004192 0.00462 -3.13497</pose>
+        <scale>1 1 1</scale>
+        <link name='link'>
+          <pose>3.5246 1.4 1.9e-05 -0.004192 0.00462 -3.13497</pose>
+          <velocity>0 0 0 0 -0 0</velocity>
+          <acceleration>-0.002442 -0.001635 -0.009651 -0.106368 -0.383894 0.023663</acceleration>
+          <wrench>-0.002442 -0.001635 -0.009651 0 -0 0</wrench>
+        </link>
+      </model>
+      <model name='flag'>
+        <pose>3.35001 1.40053 0.009987 0.00018 -4.2e-05 -3.1411</pose>
+        <scale>1 1 1</scale>
+        <link name='base'>
+          <pose>3.35001 1.40053 0.009986 0.00018 -4.2e-05 -3.1411</pose>
+          <velocity>1.7e-05 0.00013 -0.014603 -0.007217 0.00174 3e-06</velocity>
+          <acceleration>-2e-06 -0.004254 -9.07056 0.001125 4e-06 0</acceleration>
+          <wrench>-0 -0.000425 -0.907056 0 -0 0</wrench>
+        </link>
+        <link name='plate'>
+          <pose>3.35002 1.40057 0.252487 0.00018 -4.2e-05 -3.1411</pose>
+          <velocity>0.000439 0.001861 -0.014973 -0.007212 0.00174 3e-06</velocity>
+          <acceleration>1e-06 0.000376 -8.97807 -3.7e-05 4e-06 0</acceleration>
+          <wrench>0 3.8e-05 -0.897807 0 -0 0</wrench>
+        </link>
+        <link name='pole'>
+          <pose>3.35001 1.40054 0.119987 0.00018 -4.2e-05 -3.1411</pose>
+          <velocity>0.000209 0.000905 -0.014984 -0.007212 0.00174 3e-06</velocity>
+          <acceleration>0 0.000388 -8.97514 -7.6e-05 4e-06 0</acceleration>
+          <wrench>0 0.000388 -8.97514 0 -0 0</wrench>
+        </link>
+      </model>
       <model name='ground_plane'>
         <pose>0 0 0 0 -0 0</pose>
         <scale>1 1 1</scale>
@@ -1233,70 +1266,6 @@
           <acceleration>0 0 0 0 -0 0</acceleration>
           <wrench>0 0 0 0 -0 0</wrench>
         </link>
-      </model>
-      <model name='pets'>
-        <pose>1.78648 1.46495 0.066667 0 -0 0</pose>
-        <scale>1 1 1</scale>
-        <model name='cat_black'>
-          <pose>2.69223 1.01641 0.075 0 -0 0</pose>
-          <scale>1 1 1</scale>
-          <link name='link'>
-            <pose>2.69223 1.01641 0.075 0 -0 0</pose>
-            <velocity>0 0 0 0 -0 0</velocity>
-            <acceleration>0 0 0 0 -0 0</acceleration>
-            <wrench>0 0 0 0 -0 0</wrench>
-          </link>
-        </model>
-        <model name='cat_orange'>
-          <pose>1.20453 2.56979 0.075 0 -0 1.5708</pose>
-          <scale>1 1 1</scale>
-          <link name='link'>
-            <pose>1.20453 2.56979 0.075 0 -0 1.5708</pose>
-            <velocity>0 0 0 0 -0 0</velocity>
-            <acceleration>0 0 0 0 -0 0</acceleration>
-            <wrench>0 0 0 0 -0 0</wrench>
-          </link>
-        </model>
-        <model name='cat_white'>
-          <pose>0.07554 0.828717 0.075 0 -0 0</pose>
-          <scale>1 1 1</scale>
-          <link name='link'>
-            <pose>0.07554 0.828717 0.075 0 -0 0</pose>
-            <velocity>0 0 0 0 -0 0</velocity>
-            <acceleration>0 0 0 0 -0 0</acceleration>
-            <wrench>0 0 0 0 -0 0</wrench>
-          </link>
-        </model>
-        <model name='dog_black'>
-          <pose>2.29745 0.07669 0.075 0 -0 1.5708</pose>
-          <scale>1 1 1</scale>
-          <link name='link'>
-            <pose>2.29745 0.07669 0.075 0 -0 1.5708</pose>
-            <velocity>0 0 0 0 -0 0</velocity>
-            <acceleration>0 0 0 0 -0 0</acceleration>
-            <wrench>0 0 0 0 -0 0</wrench>
-          </link>
-        </model>
-        <model name='dog_orange'>
-          <pose>1.6328 1.32756 0.05 0 -0 1.5708</pose>
-          <scale>1 1 1</scale>
-          <link name='link'>
-            <pose>1.6328 1.32756 0.05 0 -0 1.5708</pose>
-            <velocity>0 0 0 0 -0 0</velocity>
-            <acceleration>0 0 0 0 -0 0</acceleration>
-            <wrench>0 0 0 0 -0 0</wrench>
-          </link>
-        </model>
-        <model name='dog_white'>
-          <pose>2.81633 2.97054 0.05 0 0 -1.5708</pose>
-          <scale>1 1 1</scale>
-          <link name='link'>
-            <pose>2.81633 2.97054 0.05 0 0 -1.5708</pose>
-            <velocity>0 0 0 0 -0 0</velocity>
-            <acceleration>0 0 0 0 -0 0</acceleration>
-            <wrench>0 0 0 0 -0 0</wrench>
-          </link>
-        </model>
       </model>
       <model name='wall_0'>
         <pose>0 1.04239 0 0 -0 1.5708</pose>
@@ -1568,280 +1537,27 @@
           <wrench>0 0 0 0 -0 0</wrench>
         </link>
       </model>
+      <model name='white_cat'>
+        <pose>0 0 0.075 0 -0 0</pose>
+        <scale>1 1 1</scale>
+        <link name='link'>
+          <pose>0 0 0.075 0 -0 0</pose>
+          <velocity>0 0 0 0 -0 0</velocity>
+          <acceleration>0 0 0 0 -0 0</acceleration>
+          <wrench>0 0 0 0 -0 0</wrench>
+        </link>
+      </model>
       <light name='sun'>
         <pose>0 0 10 0 -0 0</pose>
       </light>
     </state>
     <gui fullscreen='0'>
       <camera name='user_camera'>
-        <pose>6.2307 4.12803 4.02343 0 0.605796 -2.78299</pose>
+        <pose>2.66035 2.41265 4.99709 -0 0.9738 -2.54299</pose>
         <view_controller>orbit</view_controller>
         <projection_type>perspective</projection_type>
       </camera>
     </gui>
     <wind/>
-    <model name='pets'>
-      <model name='cat_black'>
-        <static>1</static>
-        <link name='link'>
-          <collision name='collision'>
-            <geometry>
-              <box>
-                <size>0.001 0.1 0.15</size>
-              </box>
-            </geometry>
-            <max_contacts>10</max_contacts>
-            <surface>
-              <contact>
-                <ode/>
-              </contact>
-              <bounce/>
-              <friction>
-                <torsional>
-                  <ode/>
-                </torsional>
-                <ode/>
-              </friction>
-            </surface>
-          </collision>
-          <visual name='visual'>
-            <geometry>
-              <box>
-                <size>0.001 0.1 0.15</size>
-              </box>
-            </geometry>
-            <material>
-              <script>
-                <uri>model://cat_black/materials/scripts</uri>
-                <uri>model://cat_black/materials/textures</uri>
-                <name>BlackCatImage</name>
-              </script>
-            </material>
-          </visual>
-          <self_collide>0</self_collide>
-          <enable_wind>0</enable_wind>
-          <kinematic>0</kinematic>
-        </link>
-        <pose>0.905745 -0.448537 0.008333 0 -0 0</pose>
-      </model>
-      <model name='cat_orange'>
-        <static>1</static>
-        <link name='link'>
-          <collision name='collision'>
-            <geometry>
-              <box>
-                <size>0.001 0.1 0.15</size>
-              </box>
-            </geometry>
-            <max_contacts>10</max_contacts>
-            <surface>
-              <contact>
-                <ode/>
-              </contact>
-              <bounce/>
-              <friction>
-                <torsional>
-                  <ode/>
-                </torsional>
-                <ode/>
-              </friction>
-            </surface>
-          </collision>
-          <visual name='visual'>
-            <geometry>
-              <box>
-                <size>0.001 0.1 0.15</size>
-              </box>
-            </geometry>
-            <material>
-              <script>
-                <uri>model://cat_orange/materials/scripts</uri>
-                <uri>model://cat_orange/materials/textures</uri>
-                <name>OrangeCatImage</name>
-              </script>
-            </material>
-          </visual>
-          <self_collide>0</self_collide>
-          <enable_wind>0</enable_wind>
-          <kinematic>0</kinematic>
-        </link>
-        <pose>-0.581955 1.10484 0.008333 0 -0 1.5708</pose>
-      </model>
-      <model name='cat_white'>
-        <static>1</static>
-        <link name='link'>
-          <collision name='collision'>
-            <geometry>
-              <box>
-                <size>0.001 0.1 0.15</size>
-              </box>
-            </geometry>
-            <max_contacts>10</max_contacts>
-            <surface>
-              <contact>
-                <ode/>
-              </contact>
-              <bounce/>
-              <friction>
-                <torsional>
-                  <ode/>
-                </torsional>
-                <ode/>
-              </friction>
-            </surface>
-          </collision>
-          <visual name='visual'>
-            <geometry>
-              <box>
-                <size>0.001 0.1 0.15</size>
-              </box>
-            </geometry>
-            <material>
-              <script>
-                <uri>model://cat_white/materials/scripts</uri>
-                <uri>model://cat_white/materials/textures</uri>
-                <name>WhiteCatImage</name>
-              </script>
-            </material>
-          </visual>
-          <self_collide>0</self_collide>
-          <enable_wind>0</enable_wind>
-          <kinematic>0</kinematic>
-        </link>
-        <pose>-1.71094 -0.636233 0.008333 0 -0 0</pose>
-      </model>
-      <model name='dog_black'>
-        <static>1</static>
-        <link name='link'>
-          <collision name='collision'>
-            <geometry>
-              <box>
-                <size>0.001 0.1 0.15</size>
-              </box>
-            </geometry>
-            <max_contacts>10</max_contacts>
-            <surface>
-              <contact>
-                <ode/>
-              </contact>
-              <bounce/>
-              <friction>
-                <torsional>
-                  <ode/>
-                </torsional>
-                <ode/>
-              </friction>
-            </surface>
-          </collision>
-          <visual name='visual'>
-            <geometry>
-              <box>
-                <size>0.001 0.1 0.15</size>
-              </box>
-            </geometry>
-            <material>
-              <script>
-                <uri>model://dog_black/materials/scripts</uri>
-                <uri>model://dog_black/materials/textures</uri>
-                <name>BlackDogImage</name>
-              </script>
-            </material>
-          </visual>
-          <self_collide>0</self_collide>
-          <enable_wind>0</enable_wind>
-          <kinematic>0</kinematic>
-        </link>
-        <pose>0.510971 -1.38826 0.008333 0 -0 1.5708</pose>
-      </model>
-      <model name='dog_orange'>
-        <static>1</static>
-        <link name='link'>
-          <collision name='collision'>
-            <geometry>
-              <box>
-                <size>0.001 0.135 0.1</size>
-              </box>
-            </geometry>
-            <max_contacts>10</max_contacts>
-            <surface>
-              <contact>
-                <ode/>
-              </contact>
-              <bounce/>
-              <friction>
-                <torsional>
-                  <ode/>
-                </torsional>
-                <ode/>
-              </friction>
-            </surface>
-          </collision>
-          <visual name='visual'>
-            <geometry>
-              <box>
-                <size>0.001 0.135 0.1</size>
-              </box>
-            </geometry>
-            <material>
-              <script>
-                <uri>model://dog_orange/materials/scripts</uri>
-                <uri>model://dog_orange/materials/textures</uri>
-                <name>OrangeDogImage</name>
-              </script>
-            </material>
-          </visual>
-          <self_collide>0</self_collide>
-          <enable_wind>0</enable_wind>
-          <kinematic>0</kinematic>
-        </link>
-        <pose>-0.153684 -0.137391 -0.016667 0 -0 1.5708</pose>
-      </model>
-      <model name='dog_white'>
-        <static>1</static>
-        <link name='link'>
-          <collision name='collision'>
-            <geometry>
-              <box>
-                <size>0.001 0.15 0.1</size>
-              </box>
-            </geometry>
-            <max_contacts>10</max_contacts>
-            <surface>
-              <contact>
-                <ode/>
-              </contact>
-              <bounce/>
-              <friction>
-                <torsional>
-                  <ode/>
-                </torsional>
-                <ode/>
-              </friction>
-            </surface>
-          </collision>
-          <visual name='visual'>
-            <geometry>
-              <box>
-                <size>0.001 0.15 0.1</size>
-              </box>
-            </geometry>
-            <material>
-              <script>
-                <uri>model://dog_white/materials/scripts</uri>
-                <uri>model://dog_white/materials/textures</uri>
-                <name>WhiteDogImage</name>
-              </script>
-            </material>
-          </visual>
-          <self_collide>0</self_collide>
-          <enable_wind>0</enable_wind>
-          <kinematic>0</kinematic>
-        </link>
-        <pose>1.02985 1.50559 -0.016667 0 0 -1.5708</pose>
-      </model>
-      <static>0</static>
-      <allow_auto_disable>1</allow_auto_disable>
-      <pose>1.78648 1.46495 0.066667 0 -0 0</pose>
-    </model>
   </world>
 </sdf>

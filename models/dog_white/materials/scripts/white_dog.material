@@ -1,0 +1,13 @@
+material WhiteDogImage
+{
+    technique
+    {
+        pass
+        {
+            texture_unit
+            {
+                texture ../textures/white_dog.jpg
+            }
+        }
+    }
+}

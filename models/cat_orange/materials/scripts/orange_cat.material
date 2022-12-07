@@ -1,0 +1,13 @@
+material OrangeCatImage
+{
+    technique
+    {
+        pass
+        {
+            texture_unit
+            {
+                texture ../textures/orange_cat.jpg
+            }
+        }
+    }
+}

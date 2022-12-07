@@ -1,0 +1,30 @@
+<?xml version="1.0" ?>
+<sdf version="1.5">
+    <model name='dog_black'>
+        <static>1</static>
+        <link name='link'>
+            <collision name='collision'>
+            <geometry>
+                <box>
+                <size>0.001 0.1 0.15</size>
+                </box>
+            </geometry>
+            </collision>
+            <visual name='visual'>
+            <geometry>
+                <box>
+                <size>0.001 0.1 0.15</size>
+                </box>
+            </geometry>
+            <material>
+                <script>
+                    <uri>model://dog_black/materials/scripts</uri>
+                    <uri>model://dog_black/materials/textures</uri>
+                    <name>BlackDogImage</name>
+                </script>
+            </material>
+            </visual>
+        </link>
+        <pose frame=''>0 0 0.075 0 0 0 1</pose>
+    </model>
+</sdf>

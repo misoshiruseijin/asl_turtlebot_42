@@ -56,7 +56,8 @@
         </geometry>
         <material>
           <script>
-            <uri>file://test_model/materials/scripts/repeated.material</uri>
+            <uri>model://test_model/materials/scripts</uri>
+            <uri>model://test_model/materials/textures</uri>
             <name>RepeatedTexture</name>
           </script>
         </material>

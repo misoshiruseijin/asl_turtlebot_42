@@ -1,0 +1,13 @@
+material BlackDogImage
+{
+    technique
+    {
+        pass
+        {
+            texture_unit
+            {
+                texture ../textures/black_dog.jpg
+            }
+        }
+    }
+}

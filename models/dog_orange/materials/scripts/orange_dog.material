@@ -1,0 +1,13 @@
+material OrangeDogImage
+{
+    technique
+    {
+        pass
+        {
+            texture_unit
+            {
+                texture ../textures/orange_dog.jpg
+            }
+        }
+    }
+}

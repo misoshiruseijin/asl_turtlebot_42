@@ -1,0 +1,30 @@
+<?xml version="1.0" ?>
+<sdf version="1.5">
+    <model name='dog_orange'>
+        <static>1</static>
+        <link name='link'>
+            <collision name='collision'>
+            <geometry>
+                <box>
+                <size>0.001 0.135 0.1</size>
+                </box>
+            </geometry>
+            </collision>
+            <visual name='visual'>
+            <geometry>
+                <box>
+                <size>0.001 0.135 0.1</size>
+                </box>
+            </geometry>
+            <material>
+                <script>
+                    <uri>model://dog_orange/materials/scripts</uri>
+                    <uri>model://dog_orange/materials/textures</uri>
+                    <name>OrangeDogImage</name>
+                </script>
+            </material>
+            </visual>
+        </link>
+        <pose frame=''>0 0 0.05 0 0 0 1</pose>
+    </model>
+</sdf>

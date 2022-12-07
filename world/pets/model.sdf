@@ -1,0 +1,169 @@
+<?xml version='1.0'?>
+<sdf version='1.7'>
+  <model name='pets'>
+    <model name='cat_black'>
+      <static>1</static>
+      <link name='link'>
+        <collision name='collision'>
+          <geometry>
+            <box>
+              <size>0.001 0.1 0.15</size>
+            </box>
+          </geometry>
+        </collision>
+        <visual name='visual'>
+          <geometry>
+            <box>
+              <size>0.001 0.1 0.15</size>
+            </box>
+          </geometry>
+          <material>
+            <script>
+              <uri>model://cat_black/materials/scripts</uri>
+              <uri>model://cat_black/materials/textures</uri>
+              <name>BlackCatImage</name>
+            </script>
+          </material>
+        </visual>
+      </link>
+      <pose>0.905745 -0.448537 0.008333 0 -0 0</pose>
+    </model>
+    <model name='cat_orange'>
+      <static>1</static>
+      <link name='link'>
+        <collision name='collision'>
+          <geometry>
+            <box>
+              <size>0.001 0.1 0.15</size>
+            </box>
+          </geometry>
+        </collision>
+        <visual name='visual'>
+          <geometry>
+            <box>
+              <size>0.001 0.1 0.15</size>
+            </box>
+          </geometry>
+          <material>
+            <script>
+              <uri>model://cat_orange/materials/scripts</uri>
+              <uri>model://cat_orange/materials/textures</uri>
+              <name>OrangeCatImage</name>
+            </script>
+          </material>
+        </visual>
+      </link>
+      <pose>-0.581955 1.10484 0.008333 0 -0 1.5708</pose>
+    </model>
+    <model name='cat_white'>
+      <static>1</static>
+      <link name='link'>
+        <collision name='collision'>
+          <geometry>
+            <box>
+              <size>0.001 0.1 0.15</size>
+            </box>
+          </geometry>
+        </collision>
+        <visual name='visual'>
+          <geometry>
+            <box>
+              <size>0.001 0.1 0.15</size>
+            </box>
+          </geometry>
+          <material>
+            <script>
+              <uri>model://cat_white/materials/scripts</uri>
+              <uri>model://cat_white/materials/textures</uri>
+              <name>WhiteCatImage</name>
+            </script>
+          </material>
+        </visual>
+      </link>
+      <pose>-1.71094 -0.636233 0.008333 0 -0 0</pose>
+    </model>
+    <model name='dog_black'>
+      <static>1</static>
+      <link name='link'>
+        <collision name='collision'>
+          <geometry>
+            <box>
+              <size>0.001 0.1 0.15</size>
+            </box>
+          </geometry>
+        </collision>
+        <visual name='visual'>
+          <geometry>
+            <box>
+              <size>0.001 0.1 0.15</size>
+            </box>
+          </geometry>
+          <material>
+            <script>
+              <uri>model://dog_black/materials/scripts</uri>
+              <uri>model://dog_black/materials/textures</uri>
+              <name>BlackDogImage</name>
+            </script>
+          </material>
+        </visual>
+      </link>
+      <pose>0.510971 -1.38826 0.008333 0 -0 1.5708</pose>
+    </model>
+    <model name='dog_orange'>
+      <static>1</static>
+      <link name='link'>
+        <collision name='collision'>
+          <geometry>
+            <box>
+              <size>0.001 0.135 0.1</size>
+            </box>
+          </geometry>
+        </collision>
+        <visual name='visual'>
+          <geometry>
+            <box>
+              <size>0.001 0.135 0.1</size>
+            </box>
+          </geometry>
+          <material>
+            <script>
+              <uri>model://dog_orange/materials/scripts</uri>
+              <uri>model://dog_orange/materials/textures</uri>
+              <name>OrangeDogImage</name>
+            </script>
+          </material>
+        </visual>
+      </link>
+      <pose>-0.153684 -0.137391 -0.016667 0 -0 1.5708</pose>
+    </model>
+    <model name='dog_white'>
+      <static>1</static>
+      <link name='link'>
+        <collision name='collision'>
+          <geometry>
+            <box>
+              <size>0.001 0.15 0.1</size>
+            </box>
+          </geometry>
+        </collision>
+        <visual name='visual'>
+          <geometry>
+            <box>
+              <size>0.001 0.15 0.1</size>
+            </box>
+          </geometry>
+          <material>
+            <script>
+              <uri>model://dog_white/materials/scripts</uri>
+              <uri>model://dog_white/materials/textures</uri>
+              <name>WhiteDogImage</name>
+            </script>
+          </material>
+        </visual>
+      </link>
+      <pose>1.02985 1.50559 -0.016667 0 0 -1.5708</pose>
+    </model>
+    <static>0</static>
+    <allow_auto_disable>1</allow_auto_disable>
+  </model>
+</sdf>
