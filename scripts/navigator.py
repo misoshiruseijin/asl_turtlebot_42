@@ -18,12 +18,15 @@ from enum import Enum
 from dynamic_reconfigure.server import Server
 from asl_turtlebot.cfg import NavigatorConfig
 
+import pdb
+
 # state machine modes, not all implemented
 class Mode(Enum):
     IDLE = 0
     ALIGN = 1
     TRACK = 2
     PARK = 3
+    EXPLORE = 4
 
 
 class Navigator:
@@ -82,7 +85,7 @@ class Navigator:
         self.at_thresh_theta = 0.05
 
         # trajectory smoothing
-        self.spline_alpha = 0.15
+        self.spline_alpha = 0.05
         self.spline_deg = 3  # cubic spline
         self.traj_dt = 0.1
 
@@ -91,6 +94,16 @@ class Navigator:
         self.kpy = 0.5
         self.kdx = 1.5
         self.kdy = 1.5
+
+        # hard-coded waypoints
+        self.waypoints = [
+            np.array([3.324131550403274, 2.825011104921768, 3.1383309969979205]),
+            np.array([0.6401589253684375, 2.7007479803532477, -1.6930463488479157]),
+            np.array([0.34697694194206596, 2.2791074670025457, -1.595382009148386]),
+            np.array([0.2611280218160322, 0.38254013952875754, -0.02430574067156786]),
+            np.array([2.322336742730171, 0.29914906861179397, 1.5236713646562456])
+        ]
+        self.waypoint_idx = 0
 
         # heading controller parameters
         self.kp_th = 2.0
@@ -124,6 +137,29 @@ class Navigator:
 
         print("finished init")
 
+    def gen_map(self):
+        print("--------GEN_MAP Start------------")
+        waypoints = [
+            np.array([3.324131550403274, 2.825011104921768, 3.1383309969979205]),
+            np.array([0.6401589253684375, 2.7007479803532477, -1.6930463488479157]),
+            np.array([0.34697694194206596, 2.2791074670025457, -1.595382009148386]),
+            np.array([0.2611280218160322, 0.38254013952875754, -0.02430574067156786]),
+            np.array([2.322336742730171, 0.29914906861179397, 1.5236713646562456])
+        ]
+        thresh = 0.01
+        for point in waypoints:
+            print (f'!!!!!!!!!!!!!!!!!!!!!11{point[0]}')
+            self.x_g = point[0]
+            self.y_g = point[1]
+            self.theta_g = point[2]
+            print (f'nope {self.x_g}')
+            self.replan()
+            # cur_pos = np.array([self.x, self.y, self.theta])
+            # print(f"~~~~NEW POINT : {point} ~~~~")
+            # while np.linalg.norm(cur_pos - point) > thresh:
+            #     # print("=====Moving to point======")
+            #     cur_pos = np.array([self.x, self.y, self.theta])
+            
     def dyn_cfg_callback(self, config, level):
         rospy.loginfo(
             "Reconfigure Request: k1:{k1}, k2:{k2}, k3:{k3}".format(**config)
@@ -393,6 +429,10 @@ class Navigator:
         self.switch_mode(Mode.TRACK)
 
     def run(self):
+        import time
+        # time.sleep(40)
+        # self.gen_map() # exploration
+    
         rate = rospy.Rate(10)  # 10 Hz
         while not rospy.is_shutdown():
             # try to get state information to update self.x, self.y, self.theta
@@ -417,7 +457,18 @@ class Navigator:
 
             # STATE MACHINE LOGIC
             # some transitions handled by callbacks
+            #if self.mode == Mode.EXPLORE:
+                # time.sleep(40)
+                # pdb.set_trace()
+                # self.gen_map()
+
+             #   thresh = 0.01
+                #for point in self.waypoints:
+                 #   print (f'!!!!!!!!!!!!!!!!!!!!!??{point[0]}')
             if self.mode == Mode.IDLE:
+                if (self.waypoints):
+                    self.x_g, self.y_g, self.theta_g = self.waypoints[0]
+                    self.replan()
                 pass
             elif self.mode == Mode.ALIGN:
                 if self.aligned():
@@ -441,7 +492,11 @@ class Navigator:
                     self.y_g = None
                     self.theta_g = None
                     self.switch_mode(Mode.IDLE)
+                    if self.waypoints:
+                        self.waypoints.pop(0)
+                        print(f"\nWAYPOINTS: {self.waypoints}")
 
+            # print(f"!!!!! x {self.x_g}, y {self.y_g}, theta {self.theta_g} !!!!!")
             self.publish_control()
             rate.sleep()
 
@@ -449,4 +504,6 @@ class Navigator:
 if __name__ == "__main__":
     nav = Navigator()
     rospy.on_shutdown(nav.shutdown_callback)
+    print("MODE IS:")
+    print(nav.mode)
     nav.run()
