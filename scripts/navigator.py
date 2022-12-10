@@ -85,7 +85,7 @@ class Navigator:
         self.at_thresh_theta = 0.05
 
         # trajectory smoothing
-        self.spline_alpha = 0.05
+        self.spline_alpha = 0.1
         self.spline_deg = 3  # cubic spline
         self.traj_dt = 0.1
 
@@ -101,7 +101,10 @@ class Navigator:
             np.array([0.6401589253684375, 2.7007479803532477, -1.6930463488479157]),
             np.array([0.34697694194206596, 2.2791074670025457, -1.595382009148386]),
             np.array([0.2611280218160322, 0.38254013952875754, -0.02430574067156786]),
-            np.array([2.322336742730171, 0.29914906861179397, 1.5236713646562456])
+            np.array([2.322336742730171, 0.29914906861179397, 1.5236713646562456]),
+            np.array([2.5438807940029933, 0.3091050251251528, 0.038691024881963715]),
+            np.array([3.301208403115228, 0.3403876021898541, -0.01759346365549529]),
+            np.array([3.2324503360558694, 1.4722777741314228, 1.5632348543459333])
         ]
         self.waypoint_idx = 0
 
@@ -496,7 +499,7 @@ class Navigator:
                         self.waypoints.pop(0)
                         print(f"\nWAYPOINTS: {self.waypoints}")
 
-            # print(f"!!!!! x {self.x_g}, y {self.y_g}, theta {self.theta_g} !!!!!")
+            print(f"!!!!! {self.x_g}, {self.y_g}, {self.theta_g} !!!!!")
             self.publish_control()
             rate.sleep()
 
