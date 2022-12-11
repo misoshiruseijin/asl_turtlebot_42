@@ -277,6 +277,8 @@ class Detector:
                     thetaleft, thetaright, img_laser_ranges
                 )
 
+                roi = img[ymin:ymax, xmin:xmax,:]
+                color = "red"#self.get_color(roi)
                 if not cl in self.object_publishers:
                     self.object_publishers[cl] = rospy.Publisher(
                         "/detector/" + self.object_labels[cl],
@@ -288,6 +290,7 @@ class Detector:
                 object_msg = DetectedObject()
                 object_msg.id = cl
                 object_msg.name = self.object_labels[cl]
+                #object_msg.color = color
                 object_msg.confidence = sc
                 object_msg.distance = dist
                 object_msg.thetaleft = thetaleft

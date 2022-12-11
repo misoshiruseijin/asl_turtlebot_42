@@ -811,27 +811,6 @@
       <pose frame=''>0.075 1 0.1125 0 0 1.57079632679</pose>
     </model>
 
-    <model name='cat_white'>
-      <static>1</static>
-      <link name='link'>
-        <visual name='visual'>
-          <geometry>
-            <box>
-              <size>0.15 0.15 0.225</size>
-            </box>
-          </geometry>
-          <material>
-            <script>
-                <uri>model://cat_white/materials/scripts</uri>
-                <uri>model://cat_white/materials/textures</uri>
-                <name>WhiteCatImage</name>
-            </script>
-          </material>
-        </visual>
-      </link>
-      <pose frame=''>3.2 2.97300609601 0.1125 0 0 0.0</pose>
-    </model>
-
     <model name='cat_orange'>
       <static>1</static>
       <link name='link'>

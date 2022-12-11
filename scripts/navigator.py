@@ -245,6 +245,10 @@ class Navigator:
         returns whether the robot has reached the goal position with enough
         accuracy to return to idle state
         """
+        val1 = linalg.norm(np.array([self.x - self.x_g, self.y - self.y_g]))
+        print(f"Value {val1} should be less than {self.at_thresh}")
+        val2 = abs(wrapToPi(self.theta - self.theta_g))
+        print(f"Value for theta {val2} should be less than {self.at_thresh_theta}")
         return (
             linalg.norm(np.array([self.x - self.x_g, self.y - self.y_g]))
             < self.at_thresh

@@ -6,7 +6,7 @@ material BlackCatImage
         {
             texture_unit
             {
-                texture ../textures/black_cat.jpg
+                texture ../textures/black_cat.png
             }
         }
     }
