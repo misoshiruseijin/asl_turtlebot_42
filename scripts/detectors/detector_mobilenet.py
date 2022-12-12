@@ -9,7 +9,7 @@ import os
 # tf.disable_v2_behavior()
 import torch
 import torchvision
-from torchvision.models.detection import SSDLite320_MobileNet_V3_Large_Weights
+from torchvision.models.detection import SSD300_VGG16_Weights #SSDLite320_MobileNet_V3_Large_Weights
 import numpy as np
 from sensor_msgs.msg import CompressedImage, Image, CameraInfo, LaserScan
 from asl_turtlebot.msg import DetectedObject, DetectedObjectList
@@ -59,7 +59,7 @@ class Detector:
             "/detector/objects", DetectedObjectList, queue_size=10
         )
         if USE_PYTORCH:
-            weights = SSDLite320_MobileNet_V3_Large_Weights.DEFAULT
+            weights = SSD300_VGG16_Weights.DEFAULT#SSDLite320_MobileNet_V3_Large_Weights.DEFAULT
             self.model = torchvision.models.detection.ssdlite320_mobilenet_v3_large(weights=weights, box_score_thresh=0.5)
             self.model.eval()
             if torch.cuda.is_available():
