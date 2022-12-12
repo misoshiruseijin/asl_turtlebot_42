@@ -60,7 +60,7 @@ class Detector:
         )
         if USE_PYTORCH:
             weights = SSD300_VGG16_Weights.DEFAULT#SSDLite320_MobileNet_V3_Large_Weights.DEFAULT
-            self.model = torchvision.models.detection.ssdlite320_mobilenet_v3_large(weights=weights, box_score_thresh=0.5)
+            self.model = torchvision.models.detection.ssd300_vgg16(weights=weights, box_score_thresh=0.5)#ssdlite320_mobilenet_v3_large(weights=weights, box_score_thresh=0.5)
             self.model.eval()
             if torch.cuda.is_available():
                 self.model.cuda()
@@ -334,4 +334,5 @@ class Detector:
 
 if __name__ == "__main__":
     d = Detector()
-    d.run()
+    while not rospy.is_shutdown():
+        d.run()

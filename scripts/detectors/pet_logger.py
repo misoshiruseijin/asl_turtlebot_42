@@ -1,3 +1,5 @@
+#!/usr/bin/env python3
+
 import rospy
 from asl_turtlebot.msg import DetectedObject
 from sensor_msgs.msg import CameraInfo
@@ -10,12 +12,20 @@ class PetLogger:
         self.cx, self.cy, self.fx, self.fy = 0, 0, 0, 0
 
         # Subscribe to mobilenet detector output
-        self.cat_sub = rospy.Subscriber(
+        rospy.Subscriber(
+            "/detector/dog", DetectedObject, self.pet_detection_callback
+        )
+
+        rospy.Subscriber(
+            "/detector/bird", DetectedObject, self.pet_detection_callback
+        )
+
+        rospy.Subscriber(
             "/detector/cat", DetectedObject, self.pet_detection_callback
         )
 
         # Camera parameters callback
-        self.camera_info_sub = rospy.Subscriber(
+        rospy.Subscriber(
             "/camera/camera_info", CameraInfo, self.camera_info_callback
         )
 
@@ -27,12 +37,21 @@ class PetLogger:
 
     def pet_detection_callback(self, msg):
         # Publish meow/woof
+        print("In callback")
         pet_class = msg.name
-        sound = "meow" if pet_class == "cat" else "woof"
-        self.sound_pub.pub(sound)
+        sound = None
+        if pet_class == "bird":
+            sound = "chirp chirp" 
+        elif pet_class == "dog":
+            sound  = "woof"
+        elif pet_class == "cat":
+            sound = "meow"
+        if sound:
+            print("publishing", sound)
+            self.sound_pub.pub(sound)
 
         # Store location
-        box = msg.corners
+        box = msg.corners # [ymin, xmin, ymax, xmax] 
         box_center_x, box_center_y = box[3] - box[1], box[2] - box[0]
         pet_location_camera_frame = self.project_pixel_to_world(
             box_center_x, 
@@ -42,11 +61,11 @@ class PetLogger:
         #TODO: Use transform tree to convert from camera frame to world frame
         pet_location_world_frame = ()
 
-        if not pet_class in self.pets_detected_database:
-            self.pets_detected_database[pet_class] = {}
-        if not msg.color in self.pets_detected_database[pet_class]:
-            self.pets_detected_database[pet_class][msg.color] = []
-        self.pets_detected_database[pet_class][msg.color].append(pet_location_world_frame)
+        # if not pet_class in self.pets_detected_database:
+        #     self.pets_detected_database[pet_class] = {}
+        # if not msg.color in self.pets_detected_database[pet_class]:
+        #     self.pets_detected_database[pet_class][msg.color] = []
+        # self.pets_detected_database[pet_class][msg.color].append(pet_location_world_frame)
 
     
     def project_pixel_to_world(self, u, v, dist):
@@ -56,7 +75,8 @@ class PetLogger:
 
         x = (u - self.cx) / self.fx
         y = (v - self.cy) / self.fy
-        return (x*dist, y*dist, dist)
+        #dist*(x,y,1)
+        return (x*dist, y*dist, dist) # camera frame
 
     def camera_info_callback(self, msg):
         """extracts relevant camera intrinsic parameters from the camera_info message.

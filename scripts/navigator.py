@@ -27,6 +27,7 @@ class Mode(Enum):
     TRACK = 2
     PARK = 3
     EXPLORE = 4
+    STOP = 5 
 
 
 class Navigator:
@@ -106,6 +107,70 @@ class Navigator:
             # np.array([3.301208403115228, 0.3403876021898541, -0.01759346365549529]),
             # np.array([3.2324503360558694, 1.4722777741314228, 1.5632348543459333])
         ]
+        """
+        kite
+            position: 
+            x: 3.2777429548717687
+            y: 2.791419122139724
+            z: -0.0009292272595710412
+            orientation: 
+            x: -0.00011584097272464812
+            y: -0.0005590193178033417
+            z: 0.668847917365994
+            w: 0.743399043255669
+        black dog
+            position: 
+            x: 1.8051702718271325
+            y: 2.7065318220170336
+            z: -0.0010140995588278062
+            orientation: 
+            x: -8.690950031953361e-05
+            y: -1.4629803285400862e-05
+            z: 0.9898067612778456
+            w: -0.14241687948192605
+        blue bird
+            position: 
+            x: 0.2667687828702921
+            y: 1.2734318776885905
+            z: -0.0010124007143511287
+            orientation: 
+            x: -5.528975881297754e-05
+            y: -5.241510624013091e-05
+            z: 0.8244794359946359
+            w: -0.5658919100125626
+        white dog
+            position: 
+            x: 1.4682013423730138
+            y: 0.22978137020248612
+            z: -0.001011666723957711
+            orientation: 
+            x: -5.476490821395154e-06
+            y: -6.948577062181147e-05
+            z: 0.058404177477432914
+            w: -0.9982930167014695
+        orange cat
+            position: 
+            x: 2.3382793584989243
+            y: 1.874743642140499
+            z: -0.0010117772368371438
+            orientation: 
+            x: -6.889680850445012e-05
+            y: -1.5184813413775615e-05
+            z: 0.9700120617887026
+            w: -0.24305677321786712
+        brown dog
+            position: 
+            x: 3.1064460591297567
+            y: 1.5095608716477071
+            z: -0.001011188562934865
+            orientation: 
+            x: 6.602340164340106e-05
+            y: -4.255840522849534e-06
+            z: -0.9931205551786467
+            w: -0.11709636418119392
+
+
+        """
         self.waypoint_idx = 0
 
         # heading controller parameters
@@ -138,8 +203,41 @@ class Navigator:
         rospy.Subscriber("/map_metadata", MapMetaData, self.map_md_callback)
         rospy.Subscriber("/cmd_nav", Pose2D, self.cmd_nav_callback)
 
+        # Kite Stopping: 
+        rospy.Subscriber('/detector/kite', DetectedObject, self.kite_detected_callback)
+        self.stop_min_dist = 1. 
+        self.stop_time = 2. 
+        self.cmd_vel_publisher = rospy.Publisher('/cmd_vel', Twist, queue_size=10)
+
         print("finished init")
 
+    def kite_detected_callback(self, msg):
+       """ callback for when the detector has found a kite. Note that
+       a distance of 0 can mean that the lidar did not pickup the kite at all """
+ 
+       # distance of the kite
+       dist = msg.distance
+ 
+       # if close enough and in nav mode, stop
+       if dist > 0 and dist < self.stop_min_dist and self.mode == Mode.TRACK:
+           self.init_stop()
+
+    def init_stop(self):
+       """ initiates a stop maneuver """
+       self.stop_sign_start = rospy.get_rostime()
+       self.mode = Mode.STOP
+
+    def stay_idle(self):
+       """ sends zero velocity to stay put """
+       vel_g_msg = Twist()
+       self.cmd_vel_publisher.publish(vel_g_msg)
+
+    def has_stopped(self):
+    """ checks if stop maneuver is over """
+        return self.mode == Mode.STOP and \
+            rospy.get_rostime() - self.stop_sign_start > rospy.Duration.from_sec(self.stop_time)
+
+    
     def gen_map(self):
         print("--------GEN_MAP Start------------")
         waypoints = [
@@ -246,9 +344,9 @@ class Navigator:
         accuracy to return to idle state
         """
         val1 = linalg.norm(np.array([self.x - self.x_g, self.y - self.y_g]))
-        print(f"Value {val1} should be less than {self.at_thresh}")
+        # print(f"Value {val1} should be less than {self.at_thresh}")
         val2 = abs(wrapToPi(self.theta - self.theta_g))
-        print(f"Value for theta {val2} should be less than {self.at_thresh_theta}")
+        # print(f"Value for theta {val2} should be less than {self.at_thresh_theta}")
         return (
             linalg.norm(np.array([self.x - self.x_g, self.y - self.y_g]))
             < self.at_thresh
@@ -481,6 +579,10 @@ class Navigator:
                 if self.aligned():
                     self.current_plan_start_time = rospy.get_rostime()
                     self.switch_mode(Mode.TRACK)
+            elif self.mode == Mode.STOP:
+                self.stay_idle()
+                if self.has_stopped():
+                    self.replan() 
             elif self.mode == Mode.TRACK:
                 if self.near_goal():
                     self.switch_mode(Mode.PARK)
@@ -503,7 +605,7 @@ class Navigator:
                         self.waypoints.pop(0)
                         print(f"\nWAYPOINTS: {self.waypoints}")
 
-            print(f"!!!!! {self.x_g}, {self.y_g}, {self.theta_g} !!!!!")
+            # print(f"!!!!! {self.x_g}, {self.y_g}, {self.theta_g} !!!!!")
             self.publish_control()
             rate.sleep()
 
