@@ -715,14 +715,14 @@
         <collision name='collision'>
           <geometry>
             <box>
-              <size>0.508001016002 0.001 1</size>
+              <size>0.408001016002 0.001 1</size>
             </box>
           </geometry>
         </collision>
         <visual name='visual'>
           <geometry>
             <box>
-              <size>0.508001016002 0.001 1</size>
+              <size>0.408001016002 0.001 1</size>
             </box>
           </geometry>
           <material>
@@ -733,7 +733,7 @@
           </material>
         </visual>
       </link>
-      <pose frame=''>2.87020574041 2.48920497841 0 0 0 0.0</pose>
+      <pose frame=''>2.92020574041 2.48920497841 0 0 0 0.0</pose>
     </model>
 
     <model name='wall_25'>
@@ -742,14 +742,14 @@
         <collision name='collision'>
           <geometry>
             <box>
-              <size>0.508001016002 0.001 1</size>
+              <size>0.408001016002 0.001 1</size>
             </box>
           </geometry>
         </collision>
         <visual name='visual'>
           <geometry>
             <box>
-              <size>0.508001016002 0.001 1</size>
+              <size>0.408001016002 0.001 1</size>
             </box>
           </geometry>
           <material>
@@ -760,7 +760,7 @@
           </material>
         </visual>
       </link>
-      <pose frame=''>2.87020574041 0.558801117602 0 0 0 3.14159265359</pose>
+      <pose frame=''>2.92020574041 0.558801117602 0 0 0 3.14159265359</pose>
     </model>
 
     <model name='wall_26'>
@@ -787,7 +787,7 @@
           </material>
         </visual>
       </link>
-      <pose frame=''>2.61620523241 1.52400304801 0 0 0 1.57079632679</pose>
+      <pose frame=''>2.71620523241 1.52400304801 0 0 0 1.57079632679</pose>
     </model>
 
     <model name='cat_black'>
@@ -850,7 +850,7 @@
           </material>
         </visual>
       </link>
-      <pose frame=''>1.82880365761 0.075 0.075 0 0 1.57079632679</pose>
+      <pose frame=''>1.82880365761 0.1125 0.075 0 0 1.57079632679</pose>
     </model>
 
     <model name='dog_black'>
@@ -892,7 +892,7 @@
           </material>
         </visual>
       </link>
-      <pose frame=''>2.75120523241 1.52400304801 0.075 0 0 1.57079632679</pose>
+      <pose frame=''>3.54510731521 0.75 0.075 0 0 1.57079632679</pose>
     </model>
 
     <actor name="flying_kite">

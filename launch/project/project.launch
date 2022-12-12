@@ -9,12 +9,12 @@
     <arg name="rviz" default="section4"/>
     <arg name="model" default="asl_turtlebot"/>
     <arg name="sim" default="$(arg sim)"/>
-    <arg name="detector" default="detector.py" />
+    <arg name="detector" default="detector_mobilenet.py" />
   </include>
 
   <node pkg="asl_turtlebot" type="navigator.py" name="navigator" output="screen" />
   <!-- <node pkg="asl_turtlebot" type="pose_controller.py" name="turtlebot_pose_controller" /> -->
   <!-- <node pkg="asl_turtlebot" type="detector.py" name="detector" /> -->
-  <node pkg="asl_turtlebot" type="detector_mobilenet.py" name="detector_mobilenet" />
-  <node pkg="asl_turtlebot" type="pet_logger.py" name="pet_logger" />
+  <!-- <node pkg="asl_turtlebot" type="detector_mobilenet.py" name="detector_mobilenet" /> -->
+  <node pkg="asl_turtlebot" type="pet_logger.py" name="pet_logger" output="screen"/>
 </launch>

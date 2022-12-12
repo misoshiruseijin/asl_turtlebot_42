@@ -10,7 +10,7 @@ class PetLogger:
     def __init__(self):
         rospy.init_node("pet_logger", anonymous=True)
         self.cx, self.cy, self.fx, self.fy = 0, 0, 0, 0
-
+        
         # Subscribe to mobilenet detector output
         rospy.Subscriber(
             "/detector/dog", DetectedObject, self.pet_detection_callback
@@ -28,16 +28,14 @@ class PetLogger:
         rospy.Subscriber(
             "/camera/camera_info", CameraInfo, self.camera_info_callback
         )
-
+        
         # Woof/Meow Publisher
         self.sound_pub = rospy.Publisher("/pet_found", String, queue_size=10)
 
         self.pets_detected_database = {}
-        
 
     def pet_detection_callback(self, msg):
-        # Publish meow/woof
-        print("In callback")
+        # Publish meow/woof/chirp
         pet_class = msg.name
         sound = None
         if pet_class == "bird":
@@ -47,8 +45,7 @@ class PetLogger:
         elif pet_class == "cat":
             sound = "meow"
         if sound:
-            print("publishing", sound)
-            self.sound_pub.pub(sound)
+            self.sound_pub.publish(sound)
 
         # Store location
         box = msg.corners # [ymin, xmin, ymax, xmax] 
@@ -59,7 +56,7 @@ class PetLogger:
             msg.distance
         )
         #TODO: Use transform tree to convert from camera frame to world frame
-        pet_location_world_frame = ()
+        # pet_location_world_frame = ()
 
         # if not pet_class in self.pets_detected_database:
         #     self.pets_detected_database[pet_class] = {}
@@ -102,6 +99,6 @@ class PetLogger:
     def run(self):
         rospy.spin()
 
-if __name__ == "__main___":
+if __name__ == "__main__":
     logger = PetLogger()
     logger.run()

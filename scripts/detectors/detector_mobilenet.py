@@ -334,5 +334,4 @@ class Detector:
 
 if __name__ == "__main__":
     d = Detector()
-    while not rospy.is_shutdown():
-        d.run()
+    d.run()
