@@ -3,6 +3,7 @@
 import rospy
 from asl_turtlebot.msg import DetectedObject
 from sensor_msgs.msg import CameraInfo
+from visualization_msgs.msg import Marker
 from std_msgs.msg import String
 import tf
 from tf.transformations import quaternion_matrix
@@ -27,6 +28,10 @@ class PetLogger:
             "/detector/cat", DetectedObject, self.pet_detection_callback
         )
 
+        rospy.Subscriber(
+            "/detector/kite", DetectedObject, self.pet_detection_callback
+        )
+
         # Camera parameters callback
         rospy.Subscriber(
             "/camera/camera_info", CameraInfo, self.camera_info_callback
@@ -39,8 +44,14 @@ class PetLogger:
 
         self.pets_detected_database = {}
 
+        self.marker_pub = rospy.Publisher('marker_topic', Marker, queue_size=10)
+        #rate = rospy.Rate(1)
+        
+        self.uid = 0
+
     def pet_detection_callback(self, msg):
         # Publish meow/woof/chirp
+        dist_threshold = 1. 
         pet_class = msg.name
         sound = None
         if pet_class == "bird":
@@ -49,8 +60,10 @@ class PetLogger:
             sound  = "woof"
         elif pet_class == "cat":
             sound = "meow"
+        elif pet_class == 'kite':
+            sound = 'whoosh'
         if sound:
-            self.sound_pub.publish(sound)
+            self.sound_pub.publish(sound + msg.color)
 
         # Store location
         box = msg.corners # [ymin, xmin, ymax, xmax] 
@@ -67,17 +80,24 @@ class PetLogger:
             return
 
         rot_mat = quaternion_matrix(rot)
-        print("R:", rot_mat)
-        print("trans:", trans)
         pet_location_world_frame = (rot_mat @ pet_location_camera_frame.T)[:3,0] + trans
-        print("PET LOCATION WORLD ESTIMATE:", pet_location_world_frame)
-        # pet_location_world_frame = ()
+        
+        # TODO: Handle repeat detections of the same object
+        # TODO: Color thresholding to get color of the pet
+        x, y, z = pet_location_world_frame
+        x_limit = 3.55 
+        y_limit = 2.95 
 
-        # if not pet_class in self.pets_detected_database:
-        #     self.pets_detected_database[pet_class] = {}
-        # if not msg.color in self.pets_detected_database[pet_class]:
-        #     self.pets_detected_database[pet_class][msg.color] = []
-        # self.pets_detected_database[pet_class][msg.color].append(pet_location_world_frame)
+        if msg.distance < dist_threshold and x > 0 and x < x_limit and y > 0 and y < y_limit: 
+            if pet_class != "kite": 
+                self.marker_publisher(pet_location_world_frame)
+
+            if not pet_class in self.pets_detected_database:
+                self.pets_detected_database[pet_class] = {}
+            if not msg.color in self.pets_detected_database[pet_class]:
+                self.pets_detected_database[pet_class][msg.color] = []
+            
+            self.pets_detected_database[pet_class][msg.color].append(pet_location_world_frame)
 
     
     def project_pixel_to_world(self, u, v, dist):
@@ -123,8 +143,46 @@ class PetLogger:
             print("No match for pet query found")
             return None 
 
+    def marker_publisher(self, wf):
+        
+        x, y, z = wf 
+        marker = Marker()
+
+        marker.header.frame_id = "map"
+        marker.header.stamp = rospy.Time()
+
+        # IMPORTANT: If you're creating multiple markers, 
+        #            each need to have a separate marker ID.
+        marker.id = self.uid
+
+        self.uid +=1
+        marker.type = 2 # sphere
+
+        marker.pose.position.x = x
+        marker.pose.position.y = y
+        marker.pose.position.z = z
+
+        marker.pose.orientation.x = 0.0
+        marker.pose.orientation.y = 0.0
+        marker.pose.orientation.z = 0.0
+        marker.pose.orientation.w = 1.0
+
+        marker.scale.x = 0.1
+        marker.scale.y = 0.1
+        marker.scale.z = 0.1
+
+        marker.color.a = 1.0 # Don't forget to set the alpha!
+        marker.color.r = 0.0
+        marker.color.g = 1.0
+        marker.color.b = 0.0
+        
+        self.marker_pub.publish(marker)
+        print('Published marker!')
+        
+
     def run(self):
         rospy.spin()
+
 
 if __name__ == "__main__":
     logger = PetLogger()

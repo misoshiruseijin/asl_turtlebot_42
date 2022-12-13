@@ -11,6 +11,7 @@ import torch
 import torchvision
 from torchvision.models.detection import SSD300_VGG16_Weights #SSDLite320_MobileNet_V3_Large_Weights
 import numpy as np
+from std_msgs.msg import String
 from sensor_msgs.msg import CompressedImage, Image, CameraInfo, LaserScan
 from asl_turtlebot.msg import DetectedObject, DetectedObjectList
 from cv_bridge import CvBridge, CvBridgeError
@@ -76,7 +77,7 @@ class Detector:
 
         self.object_publishers = {}
         self.object_labels = load_object_labels(PATH_TO_LABELS)
-
+        self.mean_val_pub = rospy.Publisher("/mean_val_pub", String, queue_size=10)
         rospy.Subscriber(
             "/camera/image_raw/compressed",
             CompressedImage,
@@ -278,7 +279,7 @@ class Detector:
                 )
 
                 roi = img[ymin:ymax, xmin:xmax,:]
-                color = "red"#self.get_color(roi)
+                color = self.get_color(roi, self.object_labels[cl])
                 if not cl in self.object_publishers:
                     self.object_publishers[cl] = rospy.Publisher(
                         "/detector/" + self.object_labels[cl],
@@ -290,7 +291,7 @@ class Detector:
                 object_msg = DetectedObject()
                 object_msg.id = cl
                 object_msg.name = self.object_labels[cl]
-                #object_msg.color = color
+                object_msg.color = color
                 object_msg.confidence = sc
                 object_msg.distance = dist
                 object_msg.thetaleft = thetaleft
@@ -307,6 +308,26 @@ class Detector:
         # displays the camera image
         cv2.imshow("Camera", img_bgr8)
         cv2.waitKey(1)
+
+    def get_color(self, roi, pet_class):
+        """
+        black: 47-50, 50-52, 52-55
+        blue: 79-85, 82-84, 76-79
+        white: 40-43, 57-60, 50-53
+        orange1: 39-45, 60-62 u 80-82, 73-76 u 104-106
+        """
+        b, g, r = np.mean(roi, axis=(0,1))
+        if pet_class in ["cat", "dog", "bird"]:
+            self.mean_val_pub.publish("{}, {}, {}".format(b,g,r))
+        if b < 50 and g > 60 and r > 79:
+            return "orange"
+        elif b > 75 and g > 80 and r > 75:
+            return "blue"
+        elif b < 45 and g < 55 and r > g:
+            return "white"
+        elif b > 45 and g < 55 and r < 60:
+            return "black"
+        return "undertermined"
 
     def camera_info_callback(self, msg):
         """extracts relevant camera intrinsic parameters from the camera_info message.

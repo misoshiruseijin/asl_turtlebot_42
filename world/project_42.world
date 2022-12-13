@@ -918,23 +918,23 @@
           <trajectory id="0" type="square">
              <waypoint>
                 <time>0.0</time>
-                <pose>4 3.0 0.2 0 0 0</pose>
+                <pose>3.75 3.0 0.2 0 0 0</pose>
              </waypoint>
              <waypoint>
                 <time>6.0</time>
-                <pose>2.5 3.0 0.2 0 0 0</pose>
+                <pose>3.0 3.0 0.2 0 0 0</pose>
              </waypoint>
              <waypoint>
                 <time>7.0</time>
-                <pose>2.5 3.0 0.2 0 0 3.14159265359</pose>
+                <pose>3.0 3.0 0.2 0 0 3.14159265359</pose>
              </waypoint>
              <waypoint>
                 <time>13.0</time>
-                <pose>4 3.0 0.2 0 0 3.14159265359</pose>
+                <pose>3.75 3.0 0.2 0 0 3.14159265359</pose>
              </waypoint>
              <waypoint>
                 <time>14.0</time>
-                <pose>4 3.0 0.2 0 0 0</pose>
+                <pose>3.75 3.0 0.2 0 0 0</pose>
              </waypoint>
           </trajectory>
         </script>

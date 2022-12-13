@@ -99,22 +99,22 @@ class Navigator:
         self.kdy = 1.5
 
         # hard-coded waypoints
-        # self.waypoints = [
-        #     # np.array([3.324131550403274, 2.825011104921768, 3.1383309969979205]),
-        #     # np.array([0.6401589253684375, 2.7007479803532477, -1.6930463488479157]),
-        #     # np.array([0.34697694194206596, 2.2791074670025457, -1.595382009148386]),
-        #     # np.array([0.2611280218160322, 0.38254013952875754, -0.02430574067156786]),
-        #     # np.array([2.322336742730171, 0.29914906861179397, 1.5236713646562456]),
-        #     # np.array([2.5438807940029933, 0.3091050251251528, 0.038691024881963715]),
-        #     # np.array([2.3382793584989243, 1.874743642140499, -2.6505608791010444]),
-        #     # np.array([3.301208403115228, 0.3403876021898541, -0.01759346365549529]),
-        #     # np.array([3.2324503360558694, 1.4722777741314228, 1.5632348543459333])
-        # ]
-
         self.waypoints = [
-            np.array([3.324131550403274, 2.825011104921768, 3.1383309969979205]), # point 1
+            np.array([3.324131550403274, 2.825011104921768, 3.1383309969979205]),
+            np.array([0.6401589253684375, 2.7007479803532477, -1.6930463488479157]),
+            np.array([0.34697694194206596, 2.2791074670025457, -1.595382009148386]),
+            np.array([0.2611280218160322, 0.38254013952875754, -0.02430574067156786]),
+            np.array([2.322336742730171, 0.29914906861179397, 1.5236713646562456]),
+            np.array([2.5438807940029933, 0.3091050251251528, 0.038691024881963715]),
+            np.array([2.3382793584989243, 1.874743642140499, -2.6505608791010444]),
+            np.array([3.301208403115228, 0.3403876021898541, -0.01759346365549529]),
+            np.array([3.2324503360558694, 1.4722777741314228, 1.5632348543459333])
+        ]
+
+        # self.waypoints = [
+            # np.array([3.324131550403274, 2.825011104921768, 3.1383309969979205]), # point 1
             #np.array([3.2777429548717687, 2.791419122139724, 1.4653165150734044]), #kite
-            np.array([1.8051702718271325, 2.7065318220170336, -2.855787138126887]), #black dog
+            # np.array([1.8051702718271325, 2.7065318220170336, -2.855787138126887]), #black dog
             # [1.17738059 2.48085251 2.02133499]
             # x: 1.5451539952183935
             #   y: 2.586539359851155
@@ -128,7 +128,7 @@ class Navigator:
             # np.array([2.5438807940029933, 0.3091050251251528, 0.038691024881963715]), # point 6
             # np.array([3.301208403115228, 0.3403876021898541, -0.01759346365549529]), # point 7
             # np.array([3.2324503360558694, 1.4722777741314228, 1.5632348543459333]) # point 8
-        ]
+        # ]
         self.waypoint_idx = 0
 
         # heading controller parameters
@@ -174,15 +174,19 @@ class Navigator:
  
        # distance of the kite
        dist = msg.distance
+       #print("Kite callback entered")
  
        # if close enough and in nav mode, stop
-       if dist > 0 and dist < self.stop_min_dist and self.mode == Mode.TRACK:
+       # and dist < self.stop_min_dist 
+       # and self.mode == Mode.TRACK
+       if dist > 0:
            self.init_stop()
 
     def init_stop(self):
        """ initiates a stop maneuver """
        self.stop_sign_start = rospy.get_rostime()
        self.mode = Mode.STOP
+       #print("Switched to MODE STOP")
 
     def stay_idle(self):
        """ sends zero velocity to stay put """
@@ -514,8 +518,10 @@ class Navigator:
                     self.current_plan_start_time = rospy.get_rostime()
                     self.switch_mode(Mode.TRACK)
             elif self.mode == Mode.STOP:
+                print("Entered MODE STOP")
                 self.stay_idle()
                 if self.has_stopped():
+                    print("Leaving MODE STOP, starting replan")
                     self.replan() 
             elif self.mode == Mode.TRACK:
                 if self.near_goal():
@@ -539,7 +545,7 @@ class Navigator:
                         self.waypoints.pop(0)
                         print(f"\nWAYPOINTS: {self.waypoints}")
 
-            print(f"!!!!! {self.x_g}, {self.y_g}, {self.theta_g} !!!!!")
+            #print(f"!!!!! {self.x_g}, {self.y_g}, {self.theta_g} !!!!!")
             self.publish_control()
             rate.sleep()
 

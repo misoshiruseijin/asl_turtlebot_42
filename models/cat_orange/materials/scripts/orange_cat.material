@@ -6,7 +6,7 @@ material OrangeCatImage
         {
             texture_unit
             {
-                texture ../textures/orange_cat.jpg
+                texture ../textures/orange_cat.png
             }
         }
     }

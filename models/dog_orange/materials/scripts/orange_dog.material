@@ -6,7 +6,7 @@ material OrangeDogImage
         {
             texture_unit
             {
-                texture ../textures/orange_dog.jpg
+                texture ../textures/orange_dog.png
             }
         }
     }

@@ -6,7 +6,7 @@ material WhiteDogImage
         {
             texture_unit
             {
-                texture ../textures/white_dog.jpg
+                texture ../textures/white_dog.png
             }
         }
     }
