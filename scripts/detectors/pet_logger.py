@@ -4,6 +4,9 @@ import rospy
 from asl_turtlebot.msg import DetectedObject
 from sensor_msgs.msg import CameraInfo
 from std_msgs.msg import String
+import tf
+from tf.transformations import quaternion_matrix
+import numpy as np
 
 class PetLogger:
 
@@ -29,6 +32,8 @@ class PetLogger:
             "/camera/camera_info", CameraInfo, self.camera_info_callback
         )
         
+        self.listener = tf.TransformListener()
+
         # Woof/Meow Publisher
         self.sound_pub = rospy.Publisher("/pet_found", String, queue_size=10)
 
@@ -56,6 +61,16 @@ class PetLogger:
             msg.distance
         )
         #TODO: Use transform tree to convert from camera frame to world frame
+        try:
+            (trans,rot) = self.listener.lookupTransform('/odom', '/base_camera', rospy.Time(0))
+        except (tf.LookupException, tf.ConnectivityException, tf.ExtrapolationException):
+            return
+
+        rot_mat = quaternion_matrix(rot)
+        print("R:", rot_mat)
+        print("trans:", trans)
+        pet_location_world_frame = (rot_mat @ pet_location_camera_frame.T)[:3,0] + trans
+        print("PET LOCATION WORLD ESTIMATE:", pet_location_world_frame)
         # pet_location_world_frame = ()
 
         # if not pet_class in self.pets_detected_database:
@@ -70,10 +85,22 @@ class PetLogger:
         that is a unit vector in the direction of the pixel, in the camera frame.
         This function access self.fx, self.fy, self.cx and self.cy"""
 
-        x = (u - self.cx) / self.fx
-        y = (v - self.cy) / self.fy
-        #dist*(x,y,1)
-        return (x*dist, y*dist, dist) # camera frame
+        x = (u - self.cx) / self.fx # -v
+        y = (v - self.cy) / self.fy # -u
+        z = 1.0 # depth-> x
+
+        # Convert to unit vector
+        norm = np.sqrt(x**2 + y**2 + z**2)
+        x /= norm
+        y /= norm
+        z /= norm
+
+        scale = dist / z
+        y_camera = y*scale
+        x_camera = x*scale
+        z_camera = z*scale
+        
+        return np.array([x_camera, y_camera, z_camera, 1.0]).reshape((1,4)) # camera frame
 
     def camera_info_callback(self, msg):
         """extracts relevant camera intrinsic parameters from the camera_info message.
