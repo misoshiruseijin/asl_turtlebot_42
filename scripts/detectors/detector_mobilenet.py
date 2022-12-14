@@ -330,13 +330,13 @@ class Detector:
             return "orange"
         elif h > 90 and h<128 and s > 50 and s < 255 and v > 70 and v < 255:
             return "blue"
-        elif h > 36 and h<89 and s > 60 and s < 255 and v > 70 and v < 255:
+        elif h > 36 and h<89 and s > 50 and s < 255 and v > 70 and v < 255:
             return "green"
-        elif h >0 and h < 180 and s > 0 and s < 35 and v > 70 and v < 255:
+        elif h >68 and h < 75 and s > 0 and s < 40 and v > 85 and v < 110:
             return "white"
         elif h > 0 and h < 180 and s >0 and s < 255 and v > 0 and v < 50:
             return "black"
-        return str(h)+' '+str(s)+' '+ str(v)#"undertermined"
+        return 'undetermined'#str(h)+' '+str(s)+' '+ str(v)#"undertermined"
 
     def camera_info_callback(self, msg):
         """extracts relevant camera intrinsic parameters from the camera_info message.

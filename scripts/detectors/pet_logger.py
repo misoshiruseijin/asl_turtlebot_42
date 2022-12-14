@@ -47,7 +47,7 @@ class PetLogger:
         self.marker_pub = rospy.Publisher('marker_topic', Marker, queue_size=10)
         #rate = rospy.Rate(1)
         
-        self.uid = 0
+        self.uid = {'birdgreen':1, 'dogblack':2, 'catwhite':3, 'dogwhite':4, 'catorange':5}
 
     def pet_detection_callback(self, msg):
         # Publish meow/woof/chirp
@@ -87,9 +87,11 @@ class PetLogger:
         x_limit = 3.55 
         y_limit = 2.95 
 
-        if msg.color!='undetermined' and msg.distance < dist_threshold and x > 0 and x < x_limit and y > 0 and y < y_limit: 
+        ky = pet_class+msg.color
+
+        if ky in self.uid and msg.color!='undetermined' and msg.distance < dist_threshold and x > 0 and x < x_limit and y > 0 and y < y_limit: 
             if pet_class != "kite": 
-                self.marker_publisher(trans)
+                self.marker_publisher(trans, self.uid[ky])
             if sound:
                self.sound_pub.publish(sound + msg.color)
 
@@ -98,8 +100,9 @@ class PetLogger:
             #if not msg.color in self.pets_detected_database[pet_class]:
              #   self.pets_detected_database[pet_class][msg.color] = ''
             
-            self.pets_detected_database[pet_class][msg.color]= pet_location_world_frame
+            self.pets_detected_database[pet_class][msg.color]= trans#pet_location_world_frame
             print (self.pets_detected_database)
+
 
     
     def project_pixel_to_world(self, u, v, dist):
@@ -145,7 +148,7 @@ class PetLogger:
             print("No match for pet query found")
             return None 
 
-    def marker_publisher(self, wf):
+    def marker_publisher(self, wf, kid):
         
         x, y, z = wf 
         marker = Marker()
@@ -155,9 +158,9 @@ class PetLogger:
 
         # IMPORTANT: If you're creating multiple markers, 
         #            each need to have a separate marker ID.
-        marker.id = self.uid
+        marker.id = kid
 
-        self.uid +=1
+        #self.uid +=1
         marker.type = 2 # sphere
 
         marker.pose.position.x = x
