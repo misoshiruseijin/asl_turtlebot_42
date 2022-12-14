@@ -316,18 +316,27 @@ class Detector:
         white: 40-43, 57-60, 50-53
         orange1: 39-45, 60-62 u 80-82, 73-76 u 104-106
         """
-        b, g, r = np.mean(roi, axis=(0,1))
+        #b, g, r = np.mean(roi, axis=(0,1))
+        roi_hsv = cv2.cvtColor(roi, cv2.COLOR_BGR2HSV)
+        h, s, v = np.mean(roi_hsv, axis=(0,1))
+        print ('hsv')
+        print (h)
+        print (s)
+        print (v)
+
         if pet_class in ["cat", "dog", "bird"]:
-            self.mean_val_pub.publish("{}, {}, {}".format(b,g,r))
-        if b < 50 and g > 60 and r > 79:
+            self.mean_val_pub.publish("{}, {}, {}".format(h,s,v))
+        if h >10 and h< 35 and s>100 and s < 255 and v>20 and v < 255:
             return "orange"
-        elif b > 75 and g > 80 and r > 75:
+        elif h > 90 and h<128 and s > 50 and s < 255 and v > 70 and v < 255:
             return "blue"
-        elif b < 45 and g < 55 and r > g:
+        elif h > 36 and h<89 and s > 60 and s < 255 and v > 70 and v < 255:
+            return "green"
+        elif h >0 and h < 180 and s > 0 and s < 35 and v > 70 and v < 255:
             return "white"
-        elif b > 45 and g < 55 and r < 60:
+        elif h > 0 and h < 180 and s >0 and s < 255 and v > 0 and v < 50:
             return "black"
-        return "undertermined"
+        return str(h)+' '+str(s)+' '+ str(v)#"undertermined"
 
     def camera_info_callback(self, msg):
         """extracts relevant camera intrinsic parameters from the camera_info message.

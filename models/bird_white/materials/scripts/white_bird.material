@@ -1,4 +1,4 @@
-material WhiteCatImage
+material WhiteBirdImage
 {
     technique
     {
@@ -6,7 +6,7 @@ material WhiteCatImage
         {
             texture_unit
             {
-                texture ../textures/white_cat.png
+                texture ../textures/white_bird.png
             }
         }
     }

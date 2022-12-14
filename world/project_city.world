@@ -1077,6 +1077,69 @@
       <pose frame=''>3.2 2.97300609601 0.1125 0 0 0.0</pose>
     </model>
     
+    <model name='dog_white'>
+      <static>1</static>
+      <link name='link'>
+        <visual name='visual'>
+          <geometry>
+            <box>
+              <size>0.225 0.225 0.15</size>
+            </box>
+          </geometry>
+          <material>
+            <script>
+                <uri>model://dog_white/materials/scripts</uri>
+                <uri>model://dog_white/materials/textures</uri>
+                <name>WhiteDogImage</name>
+            </script>
+          </material>
+        </visual>
+      </link>
+      <pose frame=''>2.60370523241 0.75 0.075 0 0 1.57079632679</pose>
+    </model>
+
+    <model name='cat_black'>
+      <static>1</static>
+      <link name='link'>
+        <visual name='visual'>
+          <geometry>
+            <box>
+              <size>0.15 0.15 0.225</size>
+            </box>
+          </geometry>
+          <material>
+            <script>
+                <uri>model://cat_black/materials/scripts</uri>
+                <uri>model://cat_black/materials/textures</uri>
+                <name>BlackCatImage</name>
+            </script>
+          </material>
+        </visual>
+      </link>
+      <pose frame=''>0.075 1 0.1125 0 0 1.57079632679</pose>
+    </model>
+
+    <model name='dog_orange'>
+      <static>1</static>
+      <link name='link'>
+        <visual name='visual'>
+          <geometry>
+            <box>
+              <size>0.225 0.225 0.15</size>
+            </box>
+          </geometry>
+          <material>
+            <script>
+                <uri>model://dog_orange/materials/scripts</uri>
+                <uri>model://dog_orange/materials/textures</uri>
+                <name>OrangeDogImage</name>
+            </script>
+          </material>
+        </visual>
+      </link>
+      <pose frame=''>3.54510731521 0.75 0.075 0 0 1.57079632679</pose>
+    </model>
+
     <gravity>0 0 -9.8</gravity>
     <magnetic_field>6e-06 2.3e-05 -4.2e-05</magnetic_field>
     <atmosphere type='adiabatic'/>

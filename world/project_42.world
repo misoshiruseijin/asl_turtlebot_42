@@ -790,7 +790,7 @@
       <pose frame=''>2.71620523241 1.52400304801 0 0 0 1.57079632679</pose>
     </model>
 
-    <model name='cat_black'>
+    <model name='bird_green'>
       <static>1</static>
       <link name='link'>
         <visual name='visual'>
@@ -801,9 +801,9 @@
           </geometry>
           <material>
             <script>
-                <uri>model://cat_black/materials/scripts</uri>
-                <uri>model://cat_black/materials/textures</uri>
-                <name>BlackCatImage</name>
+                <uri>model://bird_green/materials/scripts</uri>
+                <uri>model://bird_green/materials/textures</uri>
+                <name>GreenBirdImage</name>
             </script>
           </material>
         </visual>
@@ -832,27 +832,27 @@
       <pose frame=''>1.92920370841 1.84150368301 0.1125 0 0 1.57079632679</pose>
     </model>
 
-    <model name='dog_white'>
+    <model name='cat_white'>
       <static>1</static>
       <link name='link'>
         <visual name='visual'>
           <geometry>
             <box>
-              <size>0.225 0.225 0.15</size>
+              <size>0.15 0.15 0.225</size>
             </box>
           </geometry>
           <material>
             <script>
-                <uri>model://dog_white/materials/scripts</uri>
-                <uri>model://dog_white/materials/textures</uri>
-                <name>WhiteDogImage</name>
+                <uri>model://cat_white/materials/scripts</uri>
+                <uri>model://cat_white/materials/textures</uri>
+                <name>WhiteCatImage</name>
             </script>
           </material>
         </visual>
       </link>
-      <pose frame=''>1.82880365761 0.1125 0.075 0 0 1.57079632679</pose>
+      <pose frame=''>1.30810261621 0.483801117602 0.075 0 0 1.57079632679</pose>
     </model>
-
+    
     <model name='dog_black'>
       <static>1</static>
       <link name='link'>
@@ -874,20 +874,20 @@
       <pose frame=''>1.54940309881 2.56420497841 0.1125 0 0 1.57079632679</pose>
     </model>
 
-    <model name='dog_orange'>
+    <model name='dog_white'>
       <static>1</static>
       <link name='link'>
         <visual name='visual'>
           <geometry>
             <box>
-              <size>0.225 0.225 0.15</size>
+              <size>0.15 0.15 0.225</size>
             </box>
           </geometry>
           <material>
             <script>
-                <uri>model://dog_orange/materials/scripts</uri>
-                <uri>model://dog_orange/materials/textures</uri>
-                <name>OrangeDogImage</name>
+                <uri>model://dog_white/materials/scripts</uri>
+                <uri>model://dog_white/materials/textures</uri>
+                <name>WhiteDogImage</name>
             </script>
           </material>
         </visual>

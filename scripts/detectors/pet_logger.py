@@ -51,7 +51,7 @@ class PetLogger:
 
     def pet_detection_callback(self, msg):
         # Publish meow/woof/chirp
-        dist_threshold = 1. 
+        dist_threshold = 0.6
         pet_class = msg.name
         sound = None
         if pet_class == "bird":
@@ -62,8 +62,8 @@ class PetLogger:
             sound = "meow"
         elif pet_class == 'kite':
             sound = 'whoosh'
-        if sound:
-            self.sound_pub.publish(sound + msg.color)
+        #if sound:
+         #   self.sound_pub.publish(sound + msg.color)
 
         # Store location
         box = msg.corners # [ymin, xmin, ymax, xmax] 
@@ -81,23 +81,25 @@ class PetLogger:
 
         rot_mat = quaternion_matrix(rot)
         pet_location_world_frame = (rot_mat @ pet_location_camera_frame.T)[:3,0] + trans
-        
         # TODO: Handle repeat detections of the same object
         # TODO: Color thresholding to get color of the pet
         x, y, z = pet_location_world_frame
         x_limit = 3.55 
         y_limit = 2.95 
 
-        if msg.distance < dist_threshold and x > 0 and x < x_limit and y > 0 and y < y_limit: 
+        if msg.color!='undetermined' and msg.distance < dist_threshold and x > 0 and x < x_limit and y > 0 and y < y_limit: 
             if pet_class != "kite": 
-                self.marker_publisher(pet_location_world_frame)
+                self.marker_publisher(trans)
+            if sound:
+               self.sound_pub.publish(sound + msg.color)
 
             if not pet_class in self.pets_detected_database:
                 self.pets_detected_database[pet_class] = {}
-            if not msg.color in self.pets_detected_database[pet_class]:
-                self.pets_detected_database[pet_class][msg.color] = []
+            #if not msg.color in self.pets_detected_database[pet_class]:
+             #   self.pets_detected_database[pet_class][msg.color] = ''
             
-            self.pets_detected_database[pet_class][msg.color].append(pet_location_world_frame)
+            self.pets_detected_database[pet_class][msg.color]= pet_location_world_frame
+            print (self.pets_detected_database)
 
     
     def project_pixel_to_world(self, u, v, dist):
