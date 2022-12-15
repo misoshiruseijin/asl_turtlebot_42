@@ -27,7 +27,7 @@ Panels:
   - Class: rviz/Time
     Name: Time
     SyncMode: 0
-    SyncSource: Camera
+    SyncSource: ""
 Preferences:
   PromptSaveOnExit: true
 Toolbars:
@@ -58,26 +58,6 @@ Visualization Manager:
       Frame Timeout: 15
       Frames:
         All Enabled: false
-        base_camera:
-          Value: false
-        base_footprint:
-          Value: true
-        base_link:
-          Value: false
-        base_scan:
-          Value: false
-        caster_back_link:
-          Value: false
-        imu_link:
-          Value: false
-        map:
-          Value: true
-        odom:
-          Value: true
-        wheel_left_link:
-          Value: false
-        wheel_right_link:
-          Value: false
       Marker Alpha: 1
       Marker Scale: 1
       Name: TF
@@ -85,22 +65,7 @@ Visualization Manager:
       Show Axes: true
       Show Names: true
       Tree:
-        map:
-          odom:
-            base_footprint:
-              base_link:
-                base_camera:
-                  {}
-                base_scan:
-                  {}
-                caster_back_link:
-                  {}
-                imu_link:
-                  {}
-                wheel_left_link:
-                  {}
-                wheel_right_link:
-                  {}
+        {}
       Update Interval: 0
       Value: true
     - Alpha: 0.699999988079071
@@ -189,5 +154,5 @@ Window Geometry:
   Views:
     collapsed: false
   Width: 1542
-  X: 286
-  Y: 279
+  X: 284
+  Y: 247

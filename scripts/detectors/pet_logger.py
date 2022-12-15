@@ -110,7 +110,7 @@ class PetLogger:
              #   self.pets_detected_database[pet_class][msg.color] = ''
             
             self.pets_detected_database[pet_class][msg.color]= trans#pet_location_world_frame
-            print ("\n-----------DATABASE: ", self.pets_detected_database)
+            # print ("\n-----------DATABASE: ", self.pets_detected_database)
 
     def rescue_callback(self, msg):
         """
