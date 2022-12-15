@@ -50,6 +50,8 @@ add_message_files(
  FILES
  DetectedObject.msg
  DetectedObjectList.msg
+ GoalPositionObject.msg
+ GoalPositionList.msg
 )
 
 ## Generate services in the 'srv' folder

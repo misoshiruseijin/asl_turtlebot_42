@@ -1,0 +1,1 @@
+GoalPositionObject[] goal_positions

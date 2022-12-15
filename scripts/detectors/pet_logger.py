@@ -1,8 +1,9 @@
 #!/usr/bin/env python3
 
 import rospy
-from asl_turtlebot.msg import DetectedObject
+from asl_turtlebot.msg import DetectedObject, GoalPositionObject, GoalPositionList
 from sensor_msgs.msg import CameraInfo
+from geometry_msgs.msg import Pose2D
 from visualization_msgs.msg import Marker
 from std_msgs.msg import String
 import tf
@@ -32,6 +33,10 @@ class PetLogger:
             "/detector/kite", DetectedObject, self.pet_detection_callback
         )
 
+        rospy.Subscriber(
+            "/rescue_query", String, self.rescue_callback
+        )
+
         # Camera parameters callback
         rospy.Subscriber(
             "/camera/camera_info", CameraInfo, self.camera_info_callback
@@ -42,12 +47,16 @@ class PetLogger:
         # Woof/Meow Publisher
         self.sound_pub = rospy.Publisher("/pet_found", String, queue_size=10)
 
+        # Rescue Goal Publisher
+        self.rescue_goal_pub = rospy.Publisher('/rescue_locations', GoalPositionList, queue_size=10)
+
         self.pets_detected_database = {}
 
         self.marker_pub = rospy.Publisher('marker_topic', Marker, queue_size=10)
         #rate = rospy.Rate(1)
         
-        self.uid = {'birdgreen':1, 'dogblack':2, 'catwhite':3, 'dogwhite':4, 'catorange':5}
+        #self.uid = {'birdgreen':1, 'dogblack':2, 'catwhite':3, 'dogwhite':4, 'catorange':5}
+        self.uid = {'greenbird':1, 'blackdog':2, 'whitecat':3, 'whitedog':4, 'orangecat':5}
 
     def pet_detection_callback(self, msg):
         # Publish meow/woof/chirp
@@ -87,7 +96,7 @@ class PetLogger:
         x_limit = 3.55 
         y_limit = 2.95 
 
-        ky = pet_class+msg.color
+        ky = msg.color+pet_class
 
         if ky in self.uid and msg.color!='undetermined' and msg.distance < dist_threshold and x > 0 and x < x_limit and y > 0 and y < y_limit: 
             if pet_class != "kite": 
@@ -103,6 +112,58 @@ class PetLogger:
             self.pets_detected_database[pet_class][msg.color]= trans#pet_location_world_frame
             print (self.pets_detected_database)
 
+    def rescue_callback(self, msg):
+        """
+        Expect input of type "....{color}{pet}, and ....{color}{pet},...and {color}{pet}"
+        Expect input of type "....{color}{pet} {color}{pet} {color}{pet}"
+        That is, color must be immediately followed by pet class
+        """
+        query = msg.data
+        #query = "blackdog whitecat greenbird"
+
+        supported_colors = ["black", "white", "orange", "green"]
+        supported_pets = ["cat", "dog", "bird"]
+
+        pets_to_rescue = []
+        i = 0
+        "Please find my black dog and a white cat"
+        words_in_query = query.split(' ')
+        while i < len(words_in_query):
+            # if word in self.uid:
+            #     rescue_location = self.pets_detected_database[query_pet][query_color]
+            #     rescue_coords.append(rescue_location)
+            # else:
+            #     rospy.loginfo('bad input')#print("Pet: {} not supported".format(word))
+            word = words_in_query[i]
+            if word in supported_colors:
+                pet = words_in_query[i+1]
+                i = i + 2
+                if not pet in supported_pets:
+                    print("Pet: {} not supported".format(pet))
+                else:
+                    pets_to_rescue.append((pet, word))
+            else:
+                i += 1
+
+        goal_pos_list = []
+        for (pet_type, pet_color) in pets_to_rescue:
+            try:
+                rescue_location = self.pets_detected_database[pet_type][pet_color]
+                goal_pos = GoalPositionObject()
+                goal_pos.goal_pos = [float(rescue_location[0]), float(rescue_location[1]), float(rescue_location[2])]
+                goal_pos_list.append(goal_pos)
+            except KeyError:
+                print("No pet detected for query:", pet_type, pet_color)
+
+        pub_msg = GoalPositionList()
+        pub_msg.goal_positions = goal_pos_list
+        self.rescue_goal_pub.publish(pub_msg)
+
+        # Which channel to publish goal_pose to
+        # /cmd_nav
+        # self.rescue_
+        # for goal_pose in 
+        # TODO: Switch to a new rescue location each time at_goal() is true. Then publish a new goal
 
     
     def project_pixel_to_world(self, u, v, dist):
@@ -187,6 +248,20 @@ class PetLogger:
 
     def run(self):
         rospy.spin()
+
+    def at_goal(self):
+        """
+        returns whether the robot has reached the goal position with enough
+        accuracy to return to idle state
+        """
+        val1 = linalg.norm(np.array([self.x - self.x_g, self.y - self.y_g]))
+        val2 = abs(wrapToPi(self.theta - self.theta_g))
+
+        return (
+            linalg.norm(np.array([self.x - self.x_g, self.y - self.y_g]))
+            < self.at_thresh
+            and abs(wrapToPi(self.theta - self.theta_g)) < self.at_thresh_theta
+        )
 
 
 if __name__ == "__main__":
