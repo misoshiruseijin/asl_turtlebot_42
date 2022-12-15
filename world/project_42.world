@@ -853,6 +853,27 @@
       <pose frame=''>1.30810261621 0.483801117602 0.075 0 0 1.57079632679</pose>
     </model>
     
+    <model name='bird_white'>
+      <static>1</static>
+      <link name='link'>
+        <visual name='visual'>
+          <geometry>
+            <box>
+              <size>0.15 0.15 0.225</size>
+            </box>
+          </geometry>
+          <material>
+            <script>
+                <uri>model://bird_white/materials/scripts</uri>
+                <uri>model://bird_white/materials/textures</uri>
+                <name>WhiteBirdImage</name>
+            </script>
+          </material>
+        </visual>
+      </link>
+      <pose frame=''>1.54940309881 2.67420497841 0.1125 0 0 1.57079632679</pose>
+    </model>
+
     <model name='dog_black'>
       <static>1</static>
       <link name='link'>
@@ -867,27 +888,6 @@
                 <uri>model://dog_black/materials/scripts</uri>
                 <uri>model://dog_black/materials/textures</uri>
                 <name>BlackDogImage</name>
-            </script>
-          </material>
-        </visual>
-      </link>
-      <pose frame=''>1.54940309881 2.67420497841 0.1125 0 0 1.57079632679</pose>
-    </model>
-
-    <model name='dog_white'>
-      <static>1</static>
-      <link name='link'>
-        <visual name='visual'>
-          <geometry>
-            <box>
-              <size>0.15 0.15 0.225</size>
-            </box>
-          </geometry>
-          <material>
-            <script>
-                <uri>model://dog_white/materials/scripts</uri>
-                <uri>model://dog_white/materials/textures</uri>
-                <name>WhiteDogImage</name>
             </script>
           </material>
         </visual>

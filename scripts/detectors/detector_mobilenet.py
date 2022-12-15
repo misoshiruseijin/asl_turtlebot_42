@@ -326,17 +326,22 @@ class Detector:
 
         if pet_class in ["cat", "dog", "bird"]:
             self.mean_val_pub.publish("{}, {}, {}".format(h,s,v))
-        if h >10 and h< 35 and s>100 and s < 255 and v>20 and v < 255:
+        if h > 10 and h< 35 and s>100 and s < 255 and v>20 and v < 255:
             return "orange"
-        elif h > 90 and h<128 and s > 50 and s < 255 and v > 70 and v < 255:
+        elif h > 90 and h < 128 and s > 50 and s < 255 and v > 70 and v < 255:
             return "blue"
-        elif h > 36 and h<89 and s > 50 and s < 255 and v > 70 and v < 255:
-            return "green"
-        elif h >68 and h < 75 and s > 0 and s < 40 and v > 85 and v < 110:
-            return "white"
-        elif h > 0 and h < 180 and s >0 and s < 255 and v > 0 and v < 50:
+                # elif h > 0 and h < 180 and s >0 and s < 255 and v > 0 and v < 50: # original
+        elif h > 0 and h < 65 and s > 0 and s < 55 and v > 0 and v < 65:
             return "black"
-        return 'undetermined'#str(h)+' '+str(s)+' '+ str(v)#"undertermined"
+        # elif h > 36 and h<89 and s > 50 and s < 255 and v > 70 and v < 255:
+        elif h > 36 and h < 89 and s > 50 and s < 255 and v > 50 and v < 255:
+            return "green"
+        # elif h > 68 and h < 75 and s > 0 and s < 40 and v > 85 and v < 110:
+        elif h > 60 and h < 90 and s > 0 and s < 40 and v > 85 and v < 155:
+            return "white"
+
+        # return 'undetermined'
+        return str(h)+' '+str(s)+' '+ str(v)
 
     def camera_info_callback(self, msg):
         """extracts relevant camera intrinsic parameters from the camera_info message.

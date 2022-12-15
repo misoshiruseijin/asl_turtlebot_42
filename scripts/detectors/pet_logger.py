@@ -56,11 +56,11 @@ class PetLogger:
         #rate = rospy.Rate(1)
         
         #self.uid = {'birdgreen':1, 'dogblack':2, 'catwhite':3, 'dogwhite':4, 'catorange':5}
-        self.uid = {'greenbird':1, 'blackdog':2, 'whitecat':3, 'whitedog':4, 'orangecat':5}
+        self.uid = {'greenbird':1, 'whitebird':2, 'whitecat':3, 'blackdog':4, 'orangecat':5}
 
     def pet_detection_callback(self, msg):
         # Publish meow/woof/chirp
-        dist_threshold = 0.6
+        dist_threshold = 1#0.6
         pet_class = msg.name
         sound = None
         if pet_class == "bird":
@@ -110,7 +110,7 @@ class PetLogger:
              #   self.pets_detected_database[pet_class][msg.color] = ''
             
             self.pets_detected_database[pet_class][msg.color]= trans#pet_location_world_frame
-            print (self.pets_detected_database)
+            print ("\n-----------DATABASE: ", self.pets_detected_database)
 
     def rescue_callback(self, msg):
         """
@@ -154,6 +154,11 @@ class PetLogger:
                 goal_pos_list.append(goal_pos)
             except KeyError:
                 print("No pet detected for query:", pet_type, pet_color)
+
+        base_coord = np.array([3.2324503360558694, 1.4722777741314228, 1.5632348543459333])
+        goal_pos = GoalPositionObject()
+        goal_pos.goal_pos = [float(base_coord[0]), float(base_coord[1]), float(base_coord[2])]
+        goal_pos_list.append(goal_pos)
 
         pub_msg = GoalPositionList()
         pub_msg.goal_positions = goal_pos_list

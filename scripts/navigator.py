@@ -97,6 +97,7 @@ class Navigator:
         self.kdx = 1.5
         self.kdy = 1.5
 
+        self.base_coords = np.array([3.2324503360558694, 1.4722777741314228, 1.5632348543459333])
         # hard-coded waypoints
         self.waypoints = [
             np.array([3.324131550403274, 2.825011104921768, 3.1383309969979205]),
@@ -176,6 +177,7 @@ class Navigator:
         a distance of 0 can mean that the lidar did not pickup the kite at all """
         print("Received msg")
         self.rescue_coords = msg.goal_positions
+        # self.rescue_coords.append(self.base_coords)
 
         # init_goal = self.rescue_coords[0]
         # self.x_g = init_goal.goal_pos[0]
@@ -276,7 +278,7 @@ class Navigator:
                 self.map_height,
                 self.map_origin[0],
                 self.map_origin[1],
-                7,
+                7, #used to be 7
                 self.map_probs,
             )
             if self.x_g is not None:
@@ -412,6 +414,7 @@ class Navigator:
         else:
             sets mode to PARK
         """
+
         # Make sure we have a map
         if not self.occupancy:
             rospy.loginfo(
@@ -553,7 +556,10 @@ class Navigator:
                 self.stay_idle()
                 if self.has_stopped():
                     print("Leaving MODE STOP, starting replan")
-                    self.replan() 
+                    if self.x_g is not None and self.y_g is not None:
+                        self.replan() 
+                    else:
+                        self.switch_mode(Mode.IDLE)
             elif self.mode == Mode.TRACK:
                 if self.near_goal():
                     self.switch_mode(Mode.PARK)
@@ -566,20 +572,24 @@ class Navigator:
                     rospy.loginfo("replanning because out of time")
                     self.replan()  # we aren't near the goal but we thought we should have been, so replan
             elif self.mode == Mode.PARK:
-                if self.at_goal():
-                    # forget about goal:
-                    self.x_g = None
-                    self.y_g = None
-                    self.theta_g = None
+                if self.x_g is not None and self.y_g is not None:
+                    if self.at_goal():
+                        # forget about goal:
+                        self.x_g = None
+                        self.y_g = None
+                        self.theta_g = None
+                        self.switch_mode(Mode.IDLE)
+                        if self.waypoints:
+                            self.waypoints.pop(0)
+                            print(f"\nWAYPOINTS: {self.waypoints}")
+                        elif self.rescue_coords:
+                            self.rescue_coords.pop(0)
+                            print(f"\nRescue Coordinates: {self.rescue_coords}")
+                            self.init_stop()
+                else:
                     self.switch_mode(Mode.IDLE)
-                    if self.waypoints:
-                        self.waypoints.pop(0)
-                        print(f"\nWAYPOINTS: {self.waypoints}")
-                    elif self.rescue_coords:
-                        self.rescue_coords.pop(0)
-                        print(f"\nRescue Coordinates: {self.rescue_coords}")
 
-            print(f"!!!!! {self.x_g}, {self.y_g}, {self.theta_g} !!!!!")
+            # print(f"!!!!! {self.x_g}, {self.y_g}, {self.theta_g} !!!!!")
             self.publish_control()
             rate.sleep()
 
